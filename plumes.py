@@ -22,11 +22,12 @@ def scan_for_plumes(sdf_now, sdf_prev):
         # Set clusters smaller than size 250 to zero
         mask_sizes = sizes > 250
         mask_sizes[0] = 0
-        SDF_now = mask_sizes[label_objects]
+        sdf_now = mask_sizes[label_objects]
 
         sdf_clusters, num = measurements.label(sdf_now)
         plume_ids = np.unique(sdf_clusters)
         large_plume_ids = np.unique(sdf_clusters[sdf_clusters != 0])
+        new_ids = large_plume_ids
     else:
         label_objects, nb_labels = ndi.label(sdf_now)
         sizes = np.bincount(label_objects.ravel())
@@ -34,7 +35,7 @@ def scan_for_plumes(sdf_now, sdf_prev):
         # Set clusters smaller than size 250 to zero
         mask_sizes = sizes > 250
         mask_sizes[0] = 0
-        SDF_now = mask_sizes[label_objects]
+        sdf_now = mask_sizes[label_objects]
 
         sdf_clusters, num = measurements.label(sdf_now)
         plume_ids = np.unique(sdf_clusters)
@@ -68,7 +69,6 @@ def scan_for_plumes(sdf_now, sdf_prev):
             sdf_clusters[sdf_clusters == i] = prev_id
             old_id_array[sdf_clusters == i] = prev_id
         large_plume_ids = np.unique(sdf_clusters[sdf_clusters != 0])
-
     return sdf_clusters, new_ids, large_plume_ids
 
 # This returns a set of labeled plumes
@@ -106,12 +106,13 @@ class Plume:
     LLJ_likelihood = 0
     CPO_likelihood = 0
 
-    def __init__(self, plume_id, emission_time, source_lat, source_lon):
-        print 'Plume created'
+    def __init__(self, plume_id, emission_time):
         self.plume_id = plume_id
         self.emission_time = emission_time
-        self.source_lat = source_lat
-        self.source_lon = source_lon
+
+        # Now this function needs to work out for us where the new plume is
+        # located by using the SDF map and finding where there is an ID
+        # equal to the plume ID, then working out the centroid
         # Here we need a way to get the centroid for this object
 
     # So, at every timestep you have a whole load of SDFs

@@ -1,25 +1,15 @@
 import matplotlib
 matplotlib.use('Agg')
-import matplotlib.pyplot as plt
 from mpop.satellites import GeostationaryFactory
-from mpop.satout import netcdf4
 import datetime
 import numpy as np
-import iris
-import iris.quickplot as qplt
 from netCDF4 import Dataset
 from netCDF4 import date2num
-from netCDF4 import num2date
 from pycoast import ContourWriterAGG
 from PIL import Image
 from pyproj import Proj
-from mpl_toolkits.basemap import Basemap
 from pyresample.geometry import SwathDefinition
 from pyresample.kd_tree import resample_nearest
-import cube_data
-import pygrib
-import glob
-import multiprocessing
 
 def load_channels(datetime):
     """
